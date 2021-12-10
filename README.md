@@ -26,8 +26,21 @@ kubectl apply -f argocd/argocd.ingress.yaml -n argocd
 
 [original source](https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml)
 
+```shell
+kubectl apply -f rabbitmq/cluster-operator.yml
+kubectl apply -f rabbitmq/rabbitmq-cluster.yaml
+kubectl apply -f rabbitmq/rabbitmq-ingress.yaml
+```
 
+username/password (base64 encoded)
+```shell
+kubectl get secret rabbitmq-default-user -o jsonpath='{.data.username}'  -n rabbitmq
+kubectl get secret rabbitmq-default-user -o jsonpath='{.data.password}'  -n rabbitmq
+```
+output (base64 decoded):
 
+default_user_D3Iwgkfj1qy8Fdseip9
+UM944fqb265dM4GtGFPPCI9rZZPIUosD
 
 ## Cleanup
 
