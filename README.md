@@ -22,12 +22,22 @@ kubectl apply -f argocd/install.yaml -n argocd
 kubectl apply -f argocd/argocd.ingress.yaml -n argocd
 ```
 
+## Cert Manager
+
+```shell
+kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.3.1/cert-manager.yaml
+```
+
 ## RabbitMQ
 
-[original source](https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml)
+[cluster operator original source](https://github.com/rabbitmq/cluster-operator/releases/latest/download/cluster-operator.yml)
+
+[topology operator original source](https://github.com/rabbitmq/messaging-topology-operator/releases/latest/download/messaging-topology-operator-with-certmanager.yaml)
+
 
 ```shell
 kubectl apply -f rabbitmq/cluster-operator.yml
+kubectl apply -f rabbitmq/messaging-topology-operator-with-certmanager.yaml
 kubectl apply -f rabbitmq/rabbitmq-cluster.yaml
 kubectl apply -f rabbitmq/rabbitmq-ingress.yaml
 ```
@@ -41,6 +51,15 @@ output (base64 decoded):
 
 default_user_D3Iwgkfj1qy8Fdseip9
 UM944fqb265dM4GtGFPPCI9rZZPIUosD
+
+## Inventory
+
+```shell
+kubectl create ns inventory
+kubectl apply -f inventory/inventory-argocd.yaml
+kubectl apply -f inventory/inventory-client-argocd.yaml
+```
+
 
 ## Cleanup
 

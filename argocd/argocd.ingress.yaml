@@ -7,8 +7,8 @@ metadata:
   namespace: argocd
 spec:
   rules:
-    # - host: kibana.minimix.com
-    - http:
+    - host: argocd.minimix.com
+      http:
         paths:
           - pathType: Prefix
             path: /

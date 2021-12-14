@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: inventory-client
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/barenode/inventory.git
+    targetRevision: HEAD
+    path: k8s/inventory.client
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: inventory
