@@ -3,12 +3,14 @@
 
 <table>
     <th>
-        <tr>service</tr>
-        <tr>version</tr>
+        <td>name</td>
+        <td>type</td>
+        <td>version</td>
     </th>
     <tr>
-        <tr>Nginx Ingress</tr>
-        <tr>1.1.0</tr>
+        <td>nginx</td>
+        <td>ingress</td>
+        <td>1.1.0</td>
     </tr>
 </table>
 
