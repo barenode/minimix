@@ -8,8 +8,10 @@ kind create cluster --name minimix --config=./cluster-config.yaml
 
 ## Nginx
 
+[nging ingress operator original source](https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml)
+
 ```shell
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+kubectl apply -f nginx/kind/nginx-deploy-kind.yaml
 ```
 
 ## ArgoCD
@@ -34,7 +36,6 @@ kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.3
 
 [topology operator original source](https://github.com/rabbitmq/messaging-topology-operator/releases/latest/download/messaging-topology-operator-with-certmanager.yaml)
 
-
 ```shell
 kubectl apply -f rabbitmq/cluster-operator.yml
 kubectl apply -f rabbitmq/messaging-topology-operator-with-certmanager.yaml
@@ -43,14 +44,22 @@ kubectl apply -f rabbitmq/rabbitmq-ingress.yaml
 ```
 
 username/password (base64 encoded)
+
 ```shell
 kubectl get secret rabbitmq-default-user -o jsonpath='{.data.username}'  -n rabbitmq
 kubectl get secret rabbitmq-default-user -o jsonpath='{.data.password}'  -n rabbitmq
 ```
+
 output (base64 decoded):
 
 default_user_D3Iwgkfj1qy8Fdseip9
 UM944fqb265dM4GtGFPPCI9rZZPIUosD
+
+patch ingress
+
+```shell
+kubectl patch configmap tcp-services -n ingress-nginx --patch "{\"data\":{\"5672\":\"rabbitmq/rabbitmq:5672\"}}"
+```
 
 ## Inventory
 
@@ -60,9 +69,8 @@ kubectl apply -f inventory/inventory-argocd.yaml
 kubectl apply -f inventory/inventory-client-argocd.yaml
 ```
 
-
 ## Cleanup
 
 ```shell
-kind delete cluster --name minimix 
+kind delete cluster --name minimix
 ```

@@ -8,8 +8,8 @@ metadata:
   namespace: rabbitmq
 spec:
   rules:
-    - host: rabbitmq.minimix.com
-      http:
+    # - host: rabbitmq.minimix.com
+    - http:
         paths:
           - pathType: Prefix
             path: /
