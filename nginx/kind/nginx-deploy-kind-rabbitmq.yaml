@@ -1,4 +1,3 @@
-
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -12,6 +11,8 @@ kind: ConfigMap
 metadata:
   name: tcp-services
   namespace: ingress-nginx
+data:
+  5672: "rabbitmq/rabbitmq:5672"
 ---
 # Source: ingress-nginx/templates/controller-serviceaccount.yaml
 apiVersion: v1
@@ -42,7 +43,7 @@ metadata:
   name: ingress-nginx-controller
   namespace: ingress-nginx
 data:
-  allow-snippet-annotations: 'true'
+  allow-snippet-annotations: "true"
 ---
 # Source: ingress-nginx/templates/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -57,7 +58,7 @@ metadata:
   name: ingress-nginx
 rules:
   - apiGroups:
-      - ''
+      - ""
     resources:
       - configmaps
       - endpoints
@@ -69,13 +70,13 @@ rules:
       - list
       - watch
   - apiGroups:
-      - ''
+      - ""
     resources:
       - nodes
     verbs:
       - get
   - apiGroups:
-      - ''
+      - ""
     resources:
       - services
     verbs:
@@ -91,7 +92,7 @@ rules:
       - list
       - watch
   - apiGroups:
-      - ''
+      - ""
     resources:
       - events
     verbs:
@@ -147,13 +148,13 @@ metadata:
   namespace: ingress-nginx
 rules:
   - apiGroups:
-      - ''
+      - ""
     resources:
       - namespaces
     verbs:
       - get
   - apiGroups:
-      - ''
+      - ""
     resources:
       - configmaps
       - pods
@@ -164,7 +165,7 @@ rules:
       - list
       - watch
   - apiGroups:
-      - ''
+      - ""
     resources:
       - services
     verbs:
@@ -194,7 +195,7 @@ rules:
       - list
       - watch
   - apiGroups:
-      - ''
+      - ""
     resources:
       - configmaps
     resourceNames:
@@ -203,13 +204,13 @@ rules:
       - get
       - update
   - apiGroups:
-      - ''
+      - ""
     resources:
       - configmaps
     verbs:
       - create
   - apiGroups:
-      - ''
+      - ""
     resources:
       - events
     verbs:
@@ -293,6 +294,10 @@ spec:
       protocol: TCP
       targetPort: https
       appProtocol: https
+    - name: rabbitmq
+      port: 5672
+      protocol: TCP
+      targetPort: 5672
   selector:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/instance: ingress-nginx
@@ -399,6 +404,10 @@ spec:
               containerPort: 443
               protocol: TCP
               hostPort: 443
+            - name: rabbitmq
+              containerPort: 5672
+              protocol: TCP
+              hostPort: 5672
             - name: webhook
               containerPort: 8443
               protocol: TCP
@@ -411,7 +420,7 @@ spec:
               cpu: 100m
               memory: 90Mi
       nodeSelector:
-        ingress-ready: 'true'
+        ingress-ready: "true"
         kubernetes.io/os: linux
       tolerations:
         - effect: NoSchedule
@@ -562,7 +571,7 @@ metadata:
     app.kubernetes.io/component: admission-webhook
 rules:
   - apiGroups:
-      - ''
+      - ""
     resources:
       - secrets
     verbs:

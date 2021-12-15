@@ -1,5 +1,17 @@
 # minimix
 
+
+<table>
+    <th>
+        <tr>service</tr>
+        <tr>version</tr>
+    </th>
+    <tr>
+        <tr>Nginx Ingress</tr>
+        <tr>1.1.0</tr>
+    </tr>
+</table>
+
 ## Prepare Kind cluster
 
 ```shell
@@ -9,6 +21,8 @@ kind create cluster --name minimix --config=./cluster-config.yaml
 ## Nginx
 
 [nging ingress operator original source](https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml)
+
+Nging ingress with empty TCP config map (proxyfied ports) configured
 
 ```shell
 kubectl apply -f nginx/kind/nginx-deploy-kind.yaml
@@ -52,12 +66,20 @@ kubectl get secret rabbitmq-default-user -o jsonpath='{.data.password}'  -n rabb
 
 output (base64 decoded):
 
-default_user_D3Iwgkfj1qy8Fdseip9
-UM944fqb265dM4GtGFPPCI9rZZPIUosD
+default_user_RTCXIE7HPWvq3APvKpl
+twUTqrRUcsv2i39BLppraqP5YuXKYdqV
 
-patch ingress
+
+### Expose RabbitMQ port 5672
+
+[guide official](https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services/)
+[guide SO](https://stackoverflow.com/questions/61430311/exposing-multiple-tcp-udp-services-using-a-single-loadbalancer-on-k8s)
+
+patch nginx ingress
 
 ```shell
+kubectl patch deployment ingress-nginx-controller -n ingress-nginx --patch-file "rabbitmq/nginx-ingress-controller-patch.yaml"
+kubectl patch service ingress-nginx-controller -n ingress-nginx --patch-file "rabbitmq/nginx-ingress-svc-controller-patch.yaml"
 kubectl patch configmap tcp-services -n ingress-nginx --patch "{\"data\":{\"5672\":\"rabbitmq/rabbitmq:5672\"}}"
 ```
 

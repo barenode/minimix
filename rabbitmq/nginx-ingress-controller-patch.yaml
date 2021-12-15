@@ -1,0 +1,10 @@
+spec:
+  template:
+    spec:
+      containers:
+      - name: controller
+        ports:
+          - name: rabbitmq
+            containerPort: 5672
+            protocol: TCP
+            hostPort: 5672
