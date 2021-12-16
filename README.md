@@ -1,6 +1,5 @@
 # minimix
 
-
 <table>
     <th>
         <td>name</td>
@@ -26,8 +25,19 @@ kind create cluster --name minimix --config=./cluster-config.yaml
 
 Nging ingress with empty TCP config map (proxyfied ports) configured
 
+### Kind
+
 ```shell
 kubectl apply -f nginx/kind/nginx-deploy-kind.yaml
+```
+
+### Bare metal
+
+Nginx ingress pod is bidnded directly to host network, [as described here](https://kubernetes.github.io/ingress-nginx/deploy/baremetal/).
+So nginx ingress service is efectivelly bypassed and is not needed anymore.
+
+```shell
+kubectl apply -f nginx/baremetal/nginx-deploy-baremetal.yaml
 ```
 
 ## ArgoCD
@@ -68,9 +78,8 @@ kubectl get secret rabbitmq-default-user -o jsonpath='{.data.password}'  -n rabb
 
 output (base64 decoded):
 
-default_user_RTCXIE7HPWvq3APvKpl
-twUTqrRUcsv2i39BLppraqP5YuXKYdqV
-
+default_user_VvSPMC4wdmVG17GCaUI
+KNX0x43lK60KXzNFHBGLDdIr1GJjQNh3
 
 ### Expose RabbitMQ port 5672
 
