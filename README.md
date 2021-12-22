@@ -2,11 +2,11 @@
 
 
 <table>
-    <th>
-        <td>name</td>
-        <td>type</td>
-        <td>version</td>
-    </th>
+    <tr>
+        <th>name</th>
+        <th>type</th>
+        <th>version</th>
+    </tr>
     <tr>
         <td>nginx</td>
         <td>ingress</td>
@@ -68,8 +68,8 @@ kubectl get secret rabbitmq-default-user -o jsonpath='{.data.password}'  -n rabb
 
 output (base64 decoded):
 
-default_user_RTCXIE7HPWvq3APvKpl
-twUTqrRUcsv2i39BLppraqP5YuXKYdqV
+default_user_VK5bQ_W9cwMVcunrOsT
+6XnSgFNuvAsK0MxcZYR9jxrD2F0u0Oiw
 
 
 ### Expose RabbitMQ port 5672
