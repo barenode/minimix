@@ -94,6 +94,14 @@ kubectl patch service ingress-nginx-controller -n ingress-nginx --patch-file "ra
 kubectl patch configmap tcp-services -n ingress-nginx --patch "{\"data\":{\"5672\":\"rabbitmq/rabbitmq:5672\"}}"
 ```
 
+### Monitoring
+
+[prometheus rules](https://www.rabbitmq.com/kubernetes/operator/operator-monitoring.html#config-perm)
+
+```shell
+kubectl apply -f rabbitmq/prometheus-roles.yaml
+```
+
 ## Inventory
 
 ```shell
@@ -101,6 +109,10 @@ kubectl create ns inventory
 kubectl apply -f inventory/inventory-argocd.yaml
 kubectl apply -f inventory/inventory-client-argocd.yaml
 ```
+
+## Monitoring
+
+https://www.tutorialworks.com/spring-boot-prometheus-micrometer/
 
 ## Cleanup
 
