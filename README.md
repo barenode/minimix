@@ -1,6 +1,5 @@
 # minimix
 
-
 <table>
     <tr>
         <th>name</th>
@@ -26,8 +25,19 @@ kind create cluster --name minimix --config=./cluster-config.yaml
 
 Nging ingress with empty TCP config map (proxyfied ports) configured
 
+### Kind
+
 ```shell
 kubectl apply -f nginx/kind/nginx-deploy-kind.yaml
+```
+
+### Bare metal
+
+Nginx ingress pod is bidnded directly to host network, [as described here](https://kubernetes.github.io/ingress-nginx/deploy/baremetal/).
+So nginx ingress service is efectivelly bypassed and is not needed anymore.
+
+```shell
+kubectl apply -f nginx/baremetal/nginx-deploy-baremetal.yaml
 ```
 
 ## ArgoCD
@@ -85,6 +95,14 @@ kubectl patch service ingress-nginx-controller -n ingress-nginx --patch-file "ra
 kubectl patch configmap tcp-services -n ingress-nginx --patch "{\"data\":{\"5672\":\"rabbitmq/rabbitmq:5672\"}}"
 ```
 
+### Monitoring
+
+[prometheus rules](https://www.rabbitmq.com/kubernetes/operator/operator-monitoring.html#config-perm)
+
+```shell
+kubectl apply -f rabbitmq/prometheus-roles.yaml
+```
+
 ## Inventory
 
 ```shell
@@ -92,6 +110,10 @@ kubectl create ns inventory
 kubectl apply -f inventory/inventory-argocd.yaml
 kubectl apply -f inventory/inventory-client-argocd.yaml
 ```
+
+## Monitoring
+
+https://www.tutorialworks.com/spring-boot-prometheus-micrometer/
 
 ## Cleanup
 
