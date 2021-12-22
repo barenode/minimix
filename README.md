@@ -40,6 +40,32 @@ So nginx ingress service is efectivelly bypassed and is not needed anymore.
 kubectl apply -f nginx/baremetal/nginx-deploy-baremetal.yaml
 ```
 
+## Monitoring
+
+### Install kube-prometheus monitoring stack
+
+See [kube-prometheus](https://github.com/prometheus-operator/kube-prometheus)
+
+```shell
+kubectl apply -f monitoring/kube-prometheus-release-0.9/manifests/setup
+kubectl apply -f monitoring/kube-prometheus-release-0.9/manifests/
+```
+
+### Ingress
+
+Add dns mapping for host (for windows located at c:/windows/system32/drivers/etc/hosts)
+
+```
+127.0.0.1 grafana.minimix.com
+127.0.0.1 prometheus.minimix.com
+```
+
+Create ingress
+```shell
+kubectl apply -f monitoring/ingress.yaml
+```
+Access grafana console at http://grafana.minimix.com (admin:admin). Access prometheus console at http://prometheus.minimix.com
+
 ## ArgoCD
 
 [original source](https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml)
@@ -101,7 +127,13 @@ kubectl patch configmap tcp-services -n ingress-nginx --patch "{\"data\":{\"5672
 
 ```shell
 kubectl apply -f rabbitmq/prometheus-roles.yaml
+kubectl apply --filename https://raw.githubusercontent.com/rabbitmq/cluster-operator/main/observability/prometheus/monitors/rabbitmq-servicemonitor.yml
+kubectl apply --filename https://raw.githubusercontent.com/rabbitmq/cluster-operator/main/observability/prometheus/monitors/rabbitmq-cluster-operator-podmonitor.yml
 ```
+[grafana guide](https://www.rabbitmq.com/prometheus.html#grafana-configuration)
+[official dasboards](https://grafana.com/orgs/rabbitmq)
+
+
 
 ## Inventory
 
