@@ -4,16 +4,14 @@ metadata:
   name: rabbitmq-ingress
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    # nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
   namespace: rabbitmq
 spec:
   rules:
-    - host: rabbitmq.minimix.com
-      http:
+    - http:
         paths:
           - pathType: Prefix
-            path: /
-            # path: /rabbitmq(/|$)(.*)
+            path: /rabbitmq/(.*)
             backend:
               service:
                 name: rabbitmq
